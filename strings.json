@@ -1,0 +1,19 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Iternio",
+        "description": "Enter your Iternio API Key to proceed with OAuth authentication.\n\n[Get your API key here](https://www.iternio.com/api)"
+      },
+      "oauth": {
+        "title": "Authenticate with Iternio",
+        "description": "You will be redirected to Iternio to authorize access. Please complete the authorization process and return to Home Assistant."
+      }
+    },
+    "abort": {
+      "auth_failed": "Authentication failed. Please check your credentials.",
+      "cannot_connect": "Failed to connect to Iternio. Please try again.",
+      "unknown": "Unknown error occurred. Please try again."
+    }
+  }
+}

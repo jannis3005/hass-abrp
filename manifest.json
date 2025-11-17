@@ -1,0 +1,12 @@
+{
+  "domain": "iternio",
+  "name": "Iternio",
+  "codeowners": ["jannis.goeing@pm.me"],
+  "config_flow": true,
+  "documentation": "https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/-/wikis/home",
+  "issue_tracker": "https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/-/issues",
+  "requirements": ["aiohttp"],
+  "version": "1.0.0",
+  "integration_type": "service",
+  "iot_class": "cloud_polling"
+}
