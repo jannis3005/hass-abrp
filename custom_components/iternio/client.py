@@ -27,7 +27,7 @@ class IternioDB:
     async def get_oauth_url(self, client_id: str, redirect_uri: str, state: str) -> str:
         params = {
             "client_id": client_id,
-            "scope": "set_telemetry get_telemetry",
+            "scope": "set_telemetry,get_telemetry",
             "response_type": "code",
             "redirect_uri": redirect_uri,
             "state": state
