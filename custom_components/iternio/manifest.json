@@ -1,7 +1,7 @@
 {
   "domain": "iternio",
   "name": "Iternio",
-  "codeowners": ["jannis.goeing@pm.me"],
+  "codeowners": ["Jannis3005"],
   "config_flow": true,
   "documentation": "https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/-/wikis/home",
   "issue_tracker": "https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/-/issues",
