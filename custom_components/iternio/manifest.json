@@ -1,12 +1,20 @@
 {
   "domain": "iternio",
-  "name": "Iternio",
-  "codeowners": ["Jannis3005"],
+  "name": "A Better Route Planner",
+  "codeowners": [
+    "@Jannis3005"
+  ],
   "config_flow": true,
-  "documentation": "https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/-/wikis/home",
-  "issue_tracker": "https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/-/issues",
-  "requirements": ["aiohttp"],
-  "version": "1.0.0",
-  "integration_type": "service",
-  "iot_class": "cloud_polling"
+  "dependencies": [
+    "application_credentials"
+  ],
+  "documentation": "https://www.home-assistant.io/integrations/iternio",
+  "homekit": {},
+  "iot_class": "cloud_polling",
+  "quality_scale": "bronze",
+  "requirements": [
+    "aiohttp==3.13.2"
+  ],
+  "ssdp": [],
+  "zeroconf": []
 }
