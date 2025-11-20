@@ -3,10 +3,14 @@
     "step": {
       "user": {
         "title": "A Better Route Planner",
-        "description": "Enter your API Key and User Token from ABRP",
+        "description": "Enter your API Key and User Token from ABRP. Get your API Key from https://www.iternio.com/api and create a User Token by editing your car connection details in ABRP (Generic → In Development Live Datasource → Link).",
         "data": {
           "api_key": "API Key",
           "user_token": "User Token"
+        },
+        "data_description": {
+          "api_key": "Your Iternio API Key from https://www.iternio.com/api",
+          "user_token": "Your ABRP User Token (created via car connection settings → Generic → In Development Live Datasource)"
         }
       }
     },

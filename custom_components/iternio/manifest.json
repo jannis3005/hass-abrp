@@ -1,6 +1,6 @@
 {
   "domain": "iternio",
-  "name": "Iternio",
+  "name": "A Better Route Planner",
   "codeowners": ["@Jannis3005"],
   "config_flow": true,
   "documentation": "https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/-/wikis/home",
