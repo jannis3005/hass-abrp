@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "A Better Route Planner",
-        "description": "Enter your API key and User Token",
+        "description": "Enter your API Key and User Token from ABRP",
         "data": {
           "api_key": "API Key",
           "user_token": "User Token"
@@ -17,6 +17,19 @@
     },
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_account%]"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "power": {
+        "name": "Power"
+      },
+      "soc": {
+        "name": "State of Charge"
+      },
+      "soh": {
+        "name": "State of Health"
+      }
     }
   }
 }

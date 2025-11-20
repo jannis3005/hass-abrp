@@ -34,7 +34,7 @@ class IternioConfigFlow(ConfigFlow, domain=DOMAIN):
             # Validate the credentials
             try:
                 session = async_get_clientsession(self.hass)
-                vehicle_name = await self._test_credentials(session, user_token)
+                vehicle_name = await self._test_credentials(session, api_key, user_token)
 
                 # Check if already configured
                 await self.async_set_unique_id(user_token)
@@ -68,12 +68,14 @@ class IternioConfigFlow(ConfigFlow, domain=DOMAIN):
         )
 
     async def _test_credentials(
-        self, session: aiohttp.ClientSession, user_token: str
+        self, session: aiohttp.ClientSession, api_key: str, user_token: str
     ) -> str:
         """Validate credentials and return vehicle name."""
         try:
+            headers = {"Authorization": f"APIKEY {api_key}"}
             async with session.get(
                 f"{API_ME_URL}?access_token={user_token}",
+                headers=headers,
                 timeout=aiohttp.ClientTimeout(total=10),
             ) as response:
                 if response.status != 200:

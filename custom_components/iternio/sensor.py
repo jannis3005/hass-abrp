@@ -24,7 +24,7 @@ from homeassistant.helpers.update_coordinator import (
     UpdateFailed,
 )
 
-from .const import API_TELEMETRY_URL, CONF_USER_TOKEN, DOMAIN
+from .const import API_TELEMETRY_URL, CONF_API_KEY, CONF_USER_TOKEN, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,10 +37,11 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
+    api_key = entry.data[CONF_API_KEY]
     user_token = entry.data[CONF_USER_TOKEN]
     session = async_get_clientsession(hass)
 
-    coordinator = IternioDataUpdateCoordinator(hass, session, user_token)
+    coordinator = IternioDataUpdateCoordinator(hass, session, api_key, user_token)
     await coordinator.async_config_entry_first_refresh()
 
     async_add_entities(
@@ -59,10 +60,12 @@ class IternioDataUpdateCoordinator(DataUpdateCoordinator):
         self,
         hass: HomeAssistant,
         session: aiohttp.ClientSession,
+        api_key: str,
         user_token: str,
     ) -> None:
         """Initialize."""
         self.session = session
+        self.api_key = api_key
         self.user_token = user_token
 
         super().__init__(
@@ -75,8 +78,10 @@ class IternioDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Update data via library."""
         try:
+            headers = {"Authorization": f"APIKEY {self.api_key}"}
             async with self.session.get(
                 f"{API_TELEMETRY_URL}?token={self.user_token}",
+                headers=headers,
                 timeout=aiohttp.ClientTimeout(total=10),
             ) as response:
                 if response.status != 200:
@@ -113,9 +118,11 @@ class IternioSensorBase(CoordinatorEntity, SensorEntity):
 class IternioPowerSensor(IternioSensorBase):
     """Representation of Power sensor."""
 
-    _attr_device_class = SensorDeviceClass.ENERGY
+    _attr_device_class = SensorDeviceClass.POWER
     _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
-    _attr_state_class = SensorStateClass.TOTAL
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:lightning-bolt"
+    _attr_translation_key = "power"
 
     def __init__(
         self,
@@ -125,12 +132,13 @@ class IternioPowerSensor(IternioSensorBase):
         """Initialize the sensor."""
         super().__init__(coordinator, entry)
         self._attr_unique_id = f"{entry.entry_id}_power"
-        self._attr_name = "Power"
 
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return self.coordinator.data.get("power")
+        if power := self.coordinator.data.get("power"):
+            return power
+        return None
 
 
 class IternioSocSensor(IternioSensorBase):
@@ -139,6 +147,7 @@ class IternioSocSensor(IternioSensorBase):
     _attr_device_class = SensorDeviceClass.BATTERY
     _attr_native_unit_of_measurement = PERCENTAGE
     _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_translation_key = "soc"
 
     def __init__(
         self,
@@ -148,12 +157,13 @@ class IternioSocSensor(IternioSensorBase):
         """Initialize the sensor."""
         super().__init__(coordinator, entry)
         self._attr_unique_id = f"{entry.entry_id}_soc"
-        self._attr_name = "State of Charge"
 
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return self.coordinator.data.get("soc")
+        if soc := self.coordinator.data.get("soc"):
+            return soc
+        return None
 
 
 class IternioSohSensor(IternioSensorBase):
@@ -161,6 +171,8 @@ class IternioSohSensor(IternioSensorBase):
 
     _attr_native_unit_of_measurement = PERCENTAGE
     _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:heart-pulse"
+    _attr_translation_key = "soh"
 
     def __init__(
         self,
@@ -170,9 +182,10 @@ class IternioSohSensor(IternioSensorBase):
         """Initialize the sensor."""
         super().__init__(coordinator, entry)
         self._attr_unique_id = f"{entry.entry_id}_soh"
-        self._attr_name = "State of Health"
 
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        return self.coordinator.data.get("soh")
+        if soh := self.coordinator.data.get("soh"):
+            return soh
+        return None
