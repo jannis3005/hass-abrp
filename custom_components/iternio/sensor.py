@@ -97,6 +97,10 @@ class IternioDataUpdateCoordinator(DataUpdateCoordinator):
                 result = data.get("result", {})
                 telemetry = result.get("telemetry", {})
 
+                # Add timestamp from result level to telemetry data
+                if timestamp := result.get("timestamp"):
+                    telemetry["timestamp"] = timestamp
+
                 return telemetry
         except aiohttp.ClientError as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
@@ -142,7 +146,8 @@ class IternioPowerSensor(IternioSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if power := self.coordinator.data.get("power"):
+        power = self.coordinator.data.get("power")
+        if power is not None:
             return power
         return None
 
@@ -287,7 +292,8 @@ class IternioExtTempSensor(IternioSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if ext_temp := self.coordinator.data.get("ext_temp"):
+        ext_temp = self.coordinator.data.get("ext_temp")
+        if ext_temp is not None:
             return ext_temp
         return None
 
@@ -312,7 +318,8 @@ class IternioBattTempSensor(IternioSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if batt_temp := self.coordinator.data.get("batt_temp"):
+        batt_temp = self.coordinator.data.get("batt_temp")
+        if batt_temp is not None:
             return batt_temp
         return None
 
