@@ -13,7 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, UnitOfEnergy
+from homeassistant.const import PERCENTAGE, UnitOfEnergy, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceInfo
@@ -49,6 +49,12 @@ async def async_setup_entry(
             IternioPowerSensor(coordinator, entry),
             IternioSocSensor(coordinator, entry),
             IternioSohSensor(coordinator, entry),
+            IternioLongitudeSensor(coordinator, entry),
+            IternioLatitudeSensor(coordinator, entry),
+            IternioHeadingSensor(coordinator, entry),
+            IternioExtTempSensor(coordinator, entry),
+            IternioBattTempSensor(coordinator, entry),
+            IternioTimestampSensor(coordinator, entry),
         ]
     )
 
@@ -188,4 +194,148 @@ class IternioSohSensor(IternioSensorBase):
         """Return the state of the sensor."""
         if soh := self.coordinator.data.get("soh"):
             return soh
+        return None
+
+
+class IternioLongitudeSensor(IternioSensorBase):
+    """Representation of Longitude sensor."""
+
+    _attr_icon = "mdi:map-marker"
+    _attr_translation_key = "longitude"
+
+    def __init__(
+        self,
+        coordinator: IternioDataUpdateCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_longitude"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if lon := self.coordinator.data.get("lon"):
+            return lon
+        return None
+
+
+class IternioLatitudeSensor(IternioSensorBase):
+    """Representation of Latitude sensor."""
+
+    _attr_icon = "mdi:map-marker"
+    _attr_translation_key = "latitude"
+
+    def __init__(
+        self,
+        coordinator: IternioDataUpdateCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_latitude"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if lat := self.coordinator.data.get("lat"):
+            return lat
+        return None
+
+
+class IternioHeadingSensor(IternioSensorBase):
+    """Representation of Heading sensor."""
+
+    _attr_icon = "mdi:compass"
+    _attr_native_unit_of_measurement = "°"
+    _attr_translation_key = "heading"
+
+    def __init__(
+        self,
+        coordinator: IternioDataUpdateCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_heading"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if heading := self.coordinator.data.get("heading"):
+            return heading
+        return None
+
+
+class IternioExtTempSensor(IternioSensorBase):
+    """Representation of External Temperature sensor."""
+
+    _attr_device_class = SensorDeviceClass.TEMPERATURE
+    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_translation_key = "ext_temp"
+
+    def __init__(
+        self,
+        coordinator: IternioDataUpdateCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_ext_temp"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if ext_temp := self.coordinator.data.get("ext_temp"):
+            return ext_temp
+        return None
+
+
+class IternioBattTempSensor(IternioSensorBase):
+    """Representation of Battery Temperature sensor."""
+
+    _attr_device_class = SensorDeviceClass.TEMPERATURE
+    _attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_translation_key = "batt_temp"
+
+    def __init__(
+        self,
+        coordinator: IternioDataUpdateCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_batt_temp"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if batt_temp := self.coordinator.data.get("batt_temp"):
+            return batt_temp
+        return None
+
+
+class IternioTimestampSensor(IternioSensorBase):
+    """Representation of Timestamp sensor."""
+
+    _attr_device_class = SensorDeviceClass.TIMESTAMP
+    _attr_icon = "mdi:clock-outline"
+    _attr_translation_key = "timestamp"
+
+    def __init__(
+        self,
+        coordinator: IternioDataUpdateCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_timestamp"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if timestamp := self.coordinator.data.get("timestamp"):
+            return timestamp
         return None

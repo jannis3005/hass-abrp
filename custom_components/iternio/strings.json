@@ -33,6 +33,24 @@
       },
       "soh": {
         "name": "State of Health"
+      },
+      "longitude": {
+        "name": "Longitude"
+      },
+      "latitude": {
+        "name": "Latitude"
+      },
+      "heading": {
+        "name": "Heading"
+      },
+      "ext_temp": {
+        "name": "Outside Temperature"
+      },
+      "batt_temp": {
+        "name": "Battery Temperature"
+      },
+      "timestamp": {
+        "name": "Last Update"
       }
     }
   }
