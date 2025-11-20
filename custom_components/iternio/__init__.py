@@ -5,51 +5,25 @@ from __future__ import annotations
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers import aiohttp_client
-from homeassistant.helpers.config_entry_oauth2_flow import (
-    ImplementationUnavailableError,
-    OAuth2Session,
-    async_get_config_entry_implementation,
-)
 
-from . import api
+from .const import DOMAIN
 
-# TODO List the platforms that you want to support.
-# For your initial PR, limit it to 1 platform.
-_PLATFORMS: list[Platform] = [Platform.LIGHT]
-
-# TODO Create ConfigEntry type alias with ConfigEntryAuth or AsyncConfigEntryAuth object
-# TODO Rename type alias and update all entry annotations
-type New_NameConfigEntry = ConfigEntry[api.AsyncConfigEntryAuth]
+PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 
-# # TODO Update entry annotation
-async def async_setup_entry(hass: HomeAssistant, entry: New_NameConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up A Better Route Planner from a config entry."""
-    try:
-        implementation = await async_get_config_entry_implementation(hass, entry)
-    except ImplementationUnavailableError as err:
-        raise ConfigEntryNotReady(
-            "OAuth2 implementation temporarily unavailable, will retry"
-        ) from err
+    hass.data.setdefault(DOMAIN, {})
+    hass.data[DOMAIN][entry.entry_id] = entry.data
 
-    session = OAuth2Session(hass, entry, implementation)
-
-    # If using a requests-based API lib
-    entry.runtime_data = api.ConfigEntryAuth(hass, session)
-
-    # If using an aiohttp-based API lib
-    entry.runtime_data = api.AsyncConfigEntryAuth(
-        aiohttp_client.async_get_clientsession(hass), session
-    )
-
-    await hass.config_entries.async_forward_entry_setups(entry, _PLATFORMS)
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
     return True
 
 
-# TODO Update entry annotation
-async def async_unload_entry(hass: HomeAssistant, entry: New_NameConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
-    return await hass.config_entries.async_unload_platforms(entry, _PLATFORMS)
+    if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
+        hass.data[DOMAIN].pop(entry.entry_id)
+
+    return unload_ok

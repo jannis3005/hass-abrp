@@ -2,7 +2,11 @@
 
 DOMAIN = "iternio"
 
-# TODO Update with your own urls
-OAUTH2_AUTHORIZE = "https://abetterrouteplanner.com/oauth/auth"
-OAUTH2_TOKEN = "https://api.iternio.com/1/oauth/token"
+# API endpoints
 BASE_URL = "https://api.iternio.com/1"
+API_ME_URL = f"{BASE_URL}/oauth/me"
+API_TELEMETRY_URL = f"{BASE_URL}/tlm/get_telemetry"
+
+# Config keys
+CONF_API_KEY = "api_key"
+CONF_USER_TOKEN = "user_token"

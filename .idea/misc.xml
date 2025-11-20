@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.14" />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
+  <component name="KubernetesApiProvider">{}</component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_25" default="true" project-jdk-name="Python 3.14 (hass-abrp)" project-jdk-type="Python SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
