@@ -1,5 +1,5 @@
 {
-  "domain": "iternio",
+  "domain": "abetterrouteplanner",
   "name": "A Better Route Planner",
   "codeowners": ["@Jannis3005"],
   "config_flow": true,

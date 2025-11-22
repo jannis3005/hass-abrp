@@ -1,6 +1,6 @@
 """Constants for the A Better Route Planner integration."""
 
-DOMAIN = "iternio"
+DOMAIN = "abetterrouteplanner"
 
 # API endpoints
 BASE_URL = "https://api.iternio.com/1"

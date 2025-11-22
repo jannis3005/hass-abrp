@@ -42,26 +42,26 @@ async def async_setup_entry(
     user_token = entry.data[CONF_USER_TOKEN]
     session = async_get_clientsession(hass)
 
-    coordinator = IternioDataUpdateCoordinator(hass, session, api_key, user_token)
+    coordinator = AbrpDataUpdateCoordinator(hass, session, api_key, user_token)
     await coordinator.async_config_entry_first_refresh()
 
     async_add_entities(
         [
-            IternioPowerSensor(coordinator, entry),
-            IternioSocSensor(coordinator, entry),
-            IternioSohSensor(coordinator, entry),
-            IternioLongitudeSensor(coordinator, entry),
-            IternioLatitudeSensor(coordinator, entry),
-            IternioHeadingSensor(coordinator, entry),
-            IternioExtTempSensor(coordinator, entry),
-            IternioBattTempSensor(coordinator, entry),
-            IternioTimestampSensor(coordinator, entry),
-            IternioTelemetryTypeSensor(coordinator, entry),
+            AbrpPowerSensor(coordinator, entry),
+            AbrpSocSensor(coordinator, entry),
+            AbrpSohSensor(coordinator, entry),
+            AbrpLongitudeSensor(coordinator, entry),
+            AbrpLatitudeSensor(coordinator, entry),
+            AbrpHeadingSensor(coordinator, entry),
+            AbrpExtTempSensor(coordinator, entry),
+            AbrpBattTempSensor(coordinator, entry),
+            AbrpTimestampSensor(coordinator, entry),
+            AbrpTelemetryTypeSensor(coordinator, entry),
         ]
     )
 
 
-class IternioDataUpdateCoordinator(DataUpdateCoordinator):
+class AbrpDataUpdateCoordinator(DataUpdateCoordinator):
     """Class to manage fetching data from the API."""
 
     def __init__(
@@ -110,14 +110,14 @@ class IternioDataUpdateCoordinator(DataUpdateCoordinator):
             raise UpdateFailed(f"Error communicating with API: {err}") from err
 
 
-class IternioSensorBase(CoordinatorEntity, SensorEntity):
-    """Base class for Iternio sensors."""
+class AbrpSensorBase(CoordinatorEntity, SensorEntity):
+    """Base class for Abrp sensors."""
 
     _attr_has_entity_name = True
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -131,7 +131,7 @@ class IternioSensorBase(CoordinatorEntity, SensorEntity):
         )
 
 
-class IternioPowerSensor(IternioSensorBase):
+class AbrpPowerSensor(AbrpSensorBase):
     """Representation of Power sensor."""
 
     _attr_device_class = SensorDeviceClass.POWER
@@ -142,7 +142,7 @@ class IternioPowerSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -158,7 +158,7 @@ class IternioPowerSensor(IternioSensorBase):
         return None
 
 
-class IternioSocSensor(IternioSensorBase):
+class AbrpSocSensor(AbrpSensorBase):
     """Representation of State of Charge sensor."""
 
     _attr_device_class = SensorDeviceClass.BATTERY
@@ -168,7 +168,7 @@ class IternioSocSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -183,7 +183,7 @@ class IternioSocSensor(IternioSensorBase):
         return None
 
 
-class IternioSohSensor(IternioSensorBase):
+class AbrpSohSensor(AbrpSensorBase):
     """Representation of State of Health sensor."""
 
     _attr_native_unit_of_measurement = PERCENTAGE
@@ -193,7 +193,7 @@ class IternioSohSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -208,7 +208,7 @@ class IternioSohSensor(IternioSensorBase):
         return None
 
 
-class IternioLongitudeSensor(IternioSensorBase):
+class AbrpLongitudeSensor(AbrpSensorBase):
     """Representation of Longitude sensor."""
 
     _attr_icon = "mdi:map-marker"
@@ -216,7 +216,7 @@ class IternioLongitudeSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -231,7 +231,7 @@ class IternioLongitudeSensor(IternioSensorBase):
         return None
 
 
-class IternioLatitudeSensor(IternioSensorBase):
+class AbrpLatitudeSensor(AbrpSensorBase):
     """Representation of Latitude sensor."""
 
     _attr_icon = "mdi:map-marker"
@@ -239,7 +239,7 @@ class IternioLatitudeSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -254,7 +254,7 @@ class IternioLatitudeSensor(IternioSensorBase):
         return None
 
 
-class IternioHeadingSensor(IternioSensorBase):
+class AbrpHeadingSensor(AbrpSensorBase):
     """Representation of Heading sensor."""
 
     _attr_icon = "mdi:compass"
@@ -263,7 +263,7 @@ class IternioHeadingSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -278,7 +278,7 @@ class IternioHeadingSensor(IternioSensorBase):
         return None
 
 
-class IternioExtTempSensor(IternioSensorBase):
+class AbrpExtTempSensor(AbrpSensorBase):
     """Representation of External Temperature sensor."""
 
     _attr_device_class = SensorDeviceClass.TEMPERATURE
@@ -288,7 +288,7 @@ class IternioExtTempSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -304,7 +304,7 @@ class IternioExtTempSensor(IternioSensorBase):
         return None
 
 
-class IternioBattTempSensor(IternioSensorBase):
+class AbrpBattTempSensor(AbrpSensorBase):
     """Representation of Battery Temperature sensor."""
 
     _attr_device_class = SensorDeviceClass.TEMPERATURE
@@ -314,7 +314,7 @@ class IternioBattTempSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -330,7 +330,7 @@ class IternioBattTempSensor(IternioSensorBase):
         return None
 
 
-class IternioTimestampSensor(IternioSensorBase):
+class AbrpTimestampSensor(AbrpSensorBase):
     """Representation of Timestamp sensor."""
 
     _attr_device_class = SensorDeviceClass.TIMESTAMP
@@ -339,7 +339,7 @@ class IternioTimestampSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""
@@ -359,7 +359,7 @@ class IternioTimestampSensor(IternioSensorBase):
         return None
 
 
-class IternioTelemetryTypeSensor(IternioSensorBase):
+class AbrpTelemetryTypeSensor(AbrpSensorBase):
     """Representation of Telemetry Type sensor."""
 
     _attr_icon = "mdi:information-outline"
@@ -367,7 +367,7 @@ class IternioTelemetryTypeSensor(IternioSensorBase):
 
     def __init__(
         self,
-        coordinator: IternioDataUpdateCoordinator,
+        coordinator: AbrpDataUpdateCoordinator,
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor."""

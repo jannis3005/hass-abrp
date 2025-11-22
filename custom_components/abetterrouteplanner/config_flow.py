@@ -16,7 +16,7 @@ from .const import API_ME_URL, CONF_API_KEY, CONF_USER_TOKEN, DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 
-class IternioConfigFlow(ConfigFlow, domain=DOMAIN):
+class AbrpConfigFlow(ConfigFlow, domain=DOMAIN):
     """Handle a config flow for A Better Route Planner."""
 
     VERSION = 1
