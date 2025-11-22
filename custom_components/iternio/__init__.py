@@ -59,10 +59,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         tlm_json = json.dumps(tlm)
 
         # Make API call
-        url = f"{API_SEND_TELEMETRY_URL}?token={user_token}&tlm={tlm_json}"
+        url = f"{API_SEND_TELEMETRY_URL}?tlm={tlm_json}"
+        headers = {"Authorization": f"APIKEY {user_token}"}
 
         try:
-            async with session.get(url, timeout=aiohttp.ClientTimeout(total=10)) as response:
+            async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as response:
                 if response.status != 200:
                     raise Exception(f"API returned status {response.status}")
                 result = await response.json()
