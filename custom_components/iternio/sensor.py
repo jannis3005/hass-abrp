@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 import logging
 
 import aiohttp
@@ -23,6 +23,7 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
     UpdateFailed,
 )
+from homeassistant.util import dt as dt_util
 
 from .const import API_TELEMETRY_URL, CONF_API_KEY, CONF_USER_TOKEN, DOMAIN
 
@@ -55,6 +56,7 @@ async def async_setup_entry(
             IternioExtTempSensor(coordinator, entry),
             IternioBattTempSensor(coordinator, entry),
             IternioTimestampSensor(coordinator, entry),
+            IternioTelemetryTypeSensor(coordinator, entry),
         ]
     )
 
@@ -97,9 +99,11 @@ class IternioDataUpdateCoordinator(DataUpdateCoordinator):
                 result = data.get("result", {})
                 telemetry = result.get("telemetry", {})
 
-                # Add timestamp from result level to telemetry data
+                # Add timestamp and telemetry_type from result level to telemetry data
                 if timestamp := result.get("timestamp"):
                     telemetry["timestamp"] = timestamp
+                if telemetry_type := result.get("telemetry_type"):
+                    telemetry["telemetry_type"] = telemetry_type
 
                 return telemetry
         except aiohttp.ClientError as err:
@@ -343,6 +347,34 @@ class IternioTimestampSensor(IternioSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if timestamp := self.coordinator.data.get("timestamp"):
-            return timestamp
+        if timestamp_str := self.coordinator.data.get("timestamp"):
+            try:
+                # Parse the timestamp string to datetime
+                return dt_util.parse_datetime(timestamp_str)
+            except (ValueError, TypeError):
+                _LOGGER.warning("Failed to parse timestamp: %s", timestamp_str)
+                return None
+        return None
+
+
+class IternioTelemetryTypeSensor(IternioSensorBase):
+    """Representation of Telemetry Type sensor."""
+
+    _attr_icon = "mdi:information-outline"
+    _attr_translation_key = "telemetry_type"
+
+    def __init__(
+        self,
+        coordinator: IternioDataUpdateCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_telemetry_type"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if telemetry_type := self.coordinator.data.get("telemetry_type"):
+            return telemetry_type
         return None

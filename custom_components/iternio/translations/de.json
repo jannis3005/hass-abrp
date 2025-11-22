@@ -51,6 +51,9 @@
       },
       "timestamp": {
         "name": "Letzte Aktualisierung"
+      },
+      "telemetry_type": {
+        "name": "Telemetrietyp"
       }
     }
   }
