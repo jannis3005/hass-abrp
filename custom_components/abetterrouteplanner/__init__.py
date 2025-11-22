@@ -14,7 +14,7 @@ from homeassistant.core import HomeAssistant, ServiceCall
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import API_SEND_TELEMETRY_URL, CONF_USER_TOKEN, DOMAIN
+from .const import API_SEND_TELEMETRY_URL, CONF_USER_TOKEN, DOMAIN, CONF_API_KEY
 
 PLATFORMS: list[Platform] = [Platform.SENSOR]
 
@@ -45,6 +45,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     async def handle_send_telemetry(call: ServiceCall) -> None:
         """Handle the send_telemetry service call."""
+        api_key = entry.data[CONF_API_KEY]
         user_token = entry.data[CONF_USER_TOKEN]
         session = async_get_clientsession(hass)
 
@@ -59,8 +60,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         tlm_json = json.dumps(tlm)
 
         # Make API call
-        url = f"{API_SEND_TELEMETRY_URL}?tlm={tlm_json}"
-        headers = {"Authorization": f"APIKEY {user_token}"}
+        url = f"{API_SEND_TELEMETRY_URL}?token={user_token}&tlm={tlm_json}"
+        headers = {"Authorization": f"APIKEY {api_key}"}
 
         try:
             async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=10)) as response:
