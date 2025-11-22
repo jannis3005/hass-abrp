@@ -1,0 +1,81 @@
+send_telemetry:
+  name: Send telemetry
+  description: Send telemetry data to A Better Route Planner
+  fields:
+    utc:
+      name: Timestamp
+      description: Unix timestamp (seconds since epoch). If not provided, current time is used.
+      example: 1732265932
+      selector:
+        number:
+          min: 0
+    soc:
+      name: State of charge
+      description: Battery state of charge in percent (0-100)
+      example: 85.5
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+    soh:
+      name: State of health
+      description: Battery state of health in percent (0-100)
+      example: 95.0
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+    power:
+      name: Power
+      description: Power consumption/generation in kW
+      example: -15.5
+      selector:
+        number:
+          unit_of_measurement: "kW"
+    lat:
+      name: Latitude
+      description: GPS latitude coordinate
+      example: 47.6062
+      selector:
+        number:
+          min: -90
+          max: 90
+    lon:
+      name: Longitude
+      description: GPS longitude coordinate
+      example: -122.3321
+      selector:
+        number:
+          min: -180
+          max: 180
+    heading:
+      name: Heading
+      description: Vehicle heading in degrees (0-360)
+      example: 180
+      selector:
+        number:
+          min: 0
+          max: 360
+          unit_of_measurement: "°"
+    ext_temp:
+      name: External temperature
+      description: Outside temperature in Celsius
+      example: 20.5
+      selector:
+        number:
+          unit_of_measurement: "°C"
+    batt_temp:
+      name: Battery temperature
+      description: Battery temperature in Celsius
+      example: 25.0
+      selector:
+        number:
+          unit_of_measurement: "°C"
+    is_charging:
+      name: Is charging
+      description: Whether the vehicle is currently charging
+      example: true
+      selector:
+        boolean:
