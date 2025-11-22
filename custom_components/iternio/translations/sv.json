@@ -1,0 +1,57 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "A Better Route Planner",
+        "description": "Ange din API-nyckel och användartoken från ABRP. Hämta din API-nyckel från https://www.iternio.com/api och skapa en användartoken genom att redigera din bilanslutningsdetaljer i ABRP (Generic → In Development Live Datasource → Link).",
+        "data": {
+          "api_key": "API-nyckel",
+          "user_token": "Användartoken"
+        },
+        "data_description": {
+          "api_key": "Din Iternio API-nyckel från https://www.iternio.com/api",
+          "user_token": "Din ABRP användartoken (skapad via bilanslutningsinställningar → Generic → In Development Live Datasource)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Ogiltiga autentiseringsuppgifter",
+      "cannot_connect": "Kan inte ansluta till API:et",
+      "unknown": "Oväntat fel inträffade"
+    },
+    "abort": {
+      "already_configured": "Kontot är redan konfigurerat"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "power": {
+        "name": "Effekt"
+      },
+      "soc": {
+        "name": "Laddningsnivå"
+      },
+      "soh": {
+        "name": "Batterihälsa"
+      },
+      "longitude": {
+        "name": "Longitud"
+      },
+      "latitude": {
+        "name": "Latitud"
+      },
+      "heading": {
+        "name": "Riktning"
+      },
+      "ext_temp": {
+        "name": "Utomhustemperatur"
+      },
+      "batt_temp": {
+        "name": "Batteritemperatur"
+      },
+      "timestamp": {
+        "name": "Senaste uppdatering"
+      }
+    }
+  }
+}

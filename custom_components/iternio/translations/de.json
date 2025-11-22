@@ -1,0 +1,57 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "A Better Route Planner",
+        "description": "Geben Sie Ihren API-Schlüssel und Benutzer-Token von ABRP ein. Erhalten Sie Ihren API-Schlüssel von https://www.iternio.com/api und erstellen Sie einen Benutzer-Token, indem Sie Ihre Auto-Verbindungsdetails in ABRP bearbeiten (Generic → In Development Live Datasource → Verknüpfen).",
+        "data": {
+          "api_key": "API-Schlüssel",
+          "user_token": "Benutzer-Token"
+        },
+        "data_description": {
+          "api_key": "Ihr Iternio API-Schlüssel von https://www.iternio.com/api",
+          "user_token": "Ihr ABRP Benutzer-Token (erstellt über Auto-Verbindungseinstellungen → Generic → In Development Live Datasource)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Ungültige Anmeldedaten",
+      "cannot_connect": "Verbindung zur API nicht möglich",
+      "unknown": "Unerwarteter Fehler aufgetreten"
+    },
+    "abort": {
+      "already_configured": "Konto ist bereits konfiguriert"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "power": {
+        "name": "Leistung"
+      },
+      "soc": {
+        "name": "Ladezustand"
+      },
+      "soh": {
+        "name": "Batteriezustand"
+      },
+      "longitude": {
+        "name": "Längengrad"
+      },
+      "latitude": {
+        "name": "Breitengrad"
+      },
+      "heading": {
+        "name": "Fahrtrichtung"
+      },
+      "ext_temp": {
+        "name": "Außentemperatur"
+      },
+      "batt_temp": {
+        "name": "Batterietemperatur"
+      },
+      "timestamp": {
+        "name": "Letzte Aktualisierung"
+      }
+    }
+  }
+}
