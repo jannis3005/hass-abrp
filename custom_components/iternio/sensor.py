@@ -113,6 +113,8 @@ class IternioDataUpdateCoordinator(DataUpdateCoordinator):
 class IternioSensorBase(CoordinatorEntity, SensorEntity):
     """Base class for Iternio sensors."""
 
+    _attr_has_entity_name = True
+
     def __init__(
         self,
         coordinator: IternioDataUpdateCoordinator,
