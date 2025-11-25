@@ -30,7 +30,7 @@ from .const import API_TELEMETRY_URL, CONF_API_KEY, CONF_USER_TOKEN, DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 SCAN_INTERVAL = timedelta(minutes=5)
-SCAN_INTERVAL_FAST = timedelta(seconds=5)
+SCAN_INTERVAL_FAST = timedelta(seconds=15)
 
 
 async def async_setup_entry(
@@ -108,7 +108,7 @@ class AbrpDataUpdateCoordinator(DataUpdateCoordinator):
                             if ts.tzinfo is None:
                                 ts = ts.replace(tzinfo=dt_util.UTC)
 
-                            if dt_util.utcnow() - ts < timedelta(minutes=5):
+                            if dt_util.utcnow() - ts < SCAN_INTERVAL:
                                 self.update_interval = SCAN_INTERVAL_FAST
                             else:
                                 self.update_interval = SCAN_INTERVAL
