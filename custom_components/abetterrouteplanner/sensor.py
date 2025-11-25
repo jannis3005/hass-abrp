@@ -30,6 +30,7 @@ from .const import API_TELEMETRY_URL, CONF_API_KEY, CONF_USER_TOKEN, DOMAIN
 _LOGGER = logging.getLogger(__name__)
 
 SCAN_INTERVAL = timedelta(minutes=5)
+SCAN_INTERVAL_FAST = timedelta(seconds=5)
 
 
 async def async_setup_entry(
@@ -99,9 +100,20 @@ class AbrpDataUpdateCoordinator(DataUpdateCoordinator):
                 result = data.get("result", {})
                 telemetry = result.get("telemetry", {})
 
-                # Add timestamp and telemetry_type from result level to telemetry data
                 if timestamp := result.get("timestamp"):
                     telemetry["timestamp"] = timestamp
+                    try:
+                        ts = dt_util.parse_datetime(timestamp)
+                        if ts:
+                            if ts.tzinfo is None:
+                                ts = ts.replace(tzinfo=dt_util.UTC)
+
+                            if dt_util.utcnow() - ts < timedelta(minutes=5):
+                                self.update_interval = SCAN_INTERVAL_FAST
+                            else:
+                                self.update_interval = SCAN_INTERVAL
+                    except (ValueError, TypeError):
+                        pass
                 if telemetry_type := result.get("telemetry_type"):
                     telemetry["telemetry_type"] = telemetry_type
 
