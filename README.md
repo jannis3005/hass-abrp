@@ -18,7 +18,10 @@ from the A Better Route Planner app.
 
 ### Via HACS (Recommended)
 
-1. Add this repository URL: `https://github.com/jannis3005/hass-abrp` as a Custom Repository to HACS
+1. Open the Repository in HACS: 
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=jannis3005&repository=hass-abrp)
+
 2. Install the Integration
 3. Restart Home Assistant
 4. Add the Integration
