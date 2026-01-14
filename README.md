@@ -1,5 +1,8 @@
 # A Better Route Planner Home Assistant Integration
 
+> **_NOTE:_**  The Github Repository is just a Mirror of https://gitlab.jannis-goeing.de/Jannis3005/hass-abrp/
+
+
 This is a custom Home Assistant integration for the Iternio API that allows you to 
 retrieve and display telemetry data from your vehicle 
 from the A Better Route Planner app.
@@ -25,7 +28,7 @@ from the A Better Route Planner app.
 ### Step 1: Get your Iternio API Key
 
 1. Go to [https://www.iternio.com/api](https://www.iternio.com/api)
-2. Follow the steps described there to get a free API Key
+2. Follow the steps described there to get a free API Key for the **Telemetry API**
 
 ### Step 2: Create a User Token
 
