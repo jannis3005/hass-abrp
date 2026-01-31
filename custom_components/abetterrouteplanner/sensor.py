@@ -13,7 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, UnitOfEnergy, UnitOfTemperature, UnitOfPower
+from homeassistant.const import PERCENTAGE, UnitOfEnergy, UnitOfTemperature, UnitOfPower, UnitOfLength, UnitOfSpeed
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceInfo
@@ -58,6 +58,11 @@ async def async_setup_entry(
             AbrpBattTempSensor(coordinator, entry),
             AbrpTimestampSensor(coordinator, entry),
             AbrpTelemetryTypeSensor(coordinator, entry),
+            AbrpOdometerSensor(coordinator, entry),
+            AbrpEstBatteryRangeSensor(coordinator, entry),
+            AbrpSpeedSensor(coordinator, entry),
+            AbrpElevationSensor(coordinator, entry),
+            AbrpCalibratedReferenceConsumptionSensor(coordinator, entry)
         ]
     )
 
@@ -391,4 +396,129 @@ class AbrpTelemetryTypeSensor(AbrpSensorBase):
         """Return the state of the sensor."""
         if telemetry_type := self.coordinator.data.get("telemetry_type"):
             return telemetry_type
+        return None
+
+class AbrpOdometerSensor(AbrpSensorBase):
+    """Representation of Odometer sensor."""
+
+    _attr_native_unit_of_measurement = UnitOfLength.KILOMETERS
+    _attr_device_class = SensorDeviceClass.DISTANCE
+    _attr_state_class = SensorStateClass.TOTAL_INCREASING
+    _attr_icon = "mdi:measuring_tape"
+    _attr_translation_key = "odometer"
+
+    def __init__(
+            self,
+            coordinator: AbrpDataUpdateCoordinator,
+            entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_odometer"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if odometer := self.coordinator.data.get("odometer"):
+            return odometer
+        return None
+
+class AbrpEstBatteryRangeSensor(AbrpSensorBase):
+    """Representation of Estimated Battery Range sensor."""
+
+    _attr_native_unit_of_measurement = UnitOfLength.KILOMETERS
+    _attr_device_class = SensorDeviceClass.DISTANCE
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:arrow_range"
+    _attr_translation_key = "est_battery_range"
+
+    def __init__(
+            self,
+            coordinator: AbrpDataUpdateCoordinator,
+            entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_est_battery_range"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if est_battery_range := self.coordinator.data.get("est_battery_range"):
+            return est_battery_range
+        return None
+
+class AbrpSpeedSensor(AbrpSensorBase):
+    """Representation of Speed sensor."""
+
+    _attr_native_unit_of_measurement = UnitOfSpeed.KILOMETERS_PER_HOUR
+    _attr_device_class = SensorDeviceClass.SPEED
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:speed"
+    _attr_translation_key = "speed"
+
+    def __init__(
+            self,
+            coordinator: AbrpDataUpdateCoordinator,
+            entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_speed"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if speed := self.coordinator.data.get("speed"):
+            return speed
+        return None
+
+class AbrpElevationSensor(AbrpSensorBase):
+    """Representation of Elevation sensor."""
+
+    _attr_native_unit_of_measurement = UnitOfLength.METERS
+    _attr_device_class = SensorDeviceClass.DISTANCE
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:altitude"
+    _attr_translation_key = "elevation"
+
+    def __init__(
+            self,
+            coordinator: AbrpDataUpdateCoordinator,
+            entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_elevation"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if elevation := self.coordinator.data.get("elevation"):
+            return elevation
+        return None
+
+class AbrpCalibratedReferenceConsumptionSensor(AbrpSensorBase):
+    """Representation of Calibrated Reference Consumption sensor."""
+
+    _attr_native_unit_of_measurement = f"{UnitOfEnergy.WATT_HOUR}/{UnitOfLength.KILOMETERS}"
+    _attr_device_class = SensorDeviceClass.ENERGY_DISTANCE
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:area_chart"
+    _attr_translation_key = "calib_ref_cons"
+
+    def __init__(
+            self,
+            coordinator: AbrpDataUpdateCoordinator,
+            entry: ConfigEntry,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(coordinator, entry)
+        self._attr_unique_id = f"{entry.entry_id}_calib_ref_cons"
+
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if calib_ref_cons := self.coordinator.data.get("calib_ref_cons"):
+            return calib_ref_cons
         return None

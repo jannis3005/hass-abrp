@@ -54,6 +54,21 @@
       },
       "telemetry_type": {
         "name": "Telemetry Type"
+      },
+      "odometer": {
+        "name":"Odometer"
+      },
+      "est_battery_range": {
+        "name":"Estimated Battery Range"
+      },
+      "speed": {
+        "name":"Speed"
+      },
+      "elevation": {
+        "name":"Elevation"
+      },
+      "calib_ref_cons": {
+        "name":"Calibration Reference Consumption"
       }
     }
   }
