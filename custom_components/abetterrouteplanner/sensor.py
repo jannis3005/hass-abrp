@@ -13,7 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, UnitOfEnergy, UnitOfTemperature
+from homeassistant.const import PERCENTAGE, UnitOfEnergy, UnitOfTemperature, UnitOfPower
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceInfo
@@ -147,7 +147,7 @@ class AbrpPowerSensor(AbrpSensorBase):
     """Representation of Power sensor."""
 
     _attr_device_class = SensorDeviceClass.POWER
-    _attr_native_unit_of_measurement = UnitOfEnergy.KILO_WATT_HOUR
+    _attr_native_unit_of_measurement = UnitOfPower.KILO_WATT
     _attr_state_class = SensorStateClass.MEASUREMENT
     _attr_icon = "mdi:lightning-bolt"
     _attr_translation_key = "power"
