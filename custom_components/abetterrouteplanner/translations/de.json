@@ -54,6 +54,21 @@
       },
       "telemetry_type": {
         "name": "Telemetrietyp"
+      },
+      "odometer": {
+        "name": "Kilometerzähler"
+      },
+      "est_battery_range": {
+        "name": "Geschätzte Batteriereichweite"
+      },
+      "speed": {
+        "name": "Geschwindigkeit"
+      },
+      "elevation": {
+        "name": "Höhe"
+      },
+      "calib_ref_cons": {
+        "name": "Kalibrierter Referenzverbrauch"
       }
     }
   }
