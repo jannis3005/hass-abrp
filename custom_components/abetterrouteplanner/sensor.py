@@ -169,10 +169,7 @@ class AbrpPowerSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        power = self.coordinator.data.get("power")
-        if power is not None:
-            return power
-        return None
+        return self.coordinator.data.get("power")
 
 
 class AbrpSocSensor(AbrpSensorBase):
@@ -195,9 +192,7 @@ class AbrpSocSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if soc := self.coordinator.data.get("soc"):
-            return soc
-        return None
+        return self.coordinator.data.get("soc")
 
 
 class AbrpSohSensor(AbrpSensorBase):
@@ -220,9 +215,7 @@ class AbrpSohSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if soh := self.coordinator.data.get("soh"):
-            return soh
-        return None
+        return self.coordinator.data.get("soh")
 
 
 class AbrpLongitudeSensor(AbrpSensorBase):
@@ -243,9 +236,7 @@ class AbrpLongitudeSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if lon := self.coordinator.data.get("lon"):
-            return lon
-        return None
+        return self.coordinator.data.get("lon")
 
 
 class AbrpLatitudeSensor(AbrpSensorBase):
@@ -266,9 +257,7 @@ class AbrpLatitudeSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if lat := self.coordinator.data.get("lat"):
-            return lat
-        return None
+        return self.coordinator.data.get("lat")
 
 
 class AbrpHeadingSensor(AbrpSensorBase):
@@ -290,9 +279,7 @@ class AbrpHeadingSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if heading := self.coordinator.data.get("heading"):
-            return heading
-        return None
+        return self.coordinator.data.get("heading")
 
 
 class AbrpExtTempSensor(AbrpSensorBase):
@@ -315,10 +302,7 @@ class AbrpExtTempSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        ext_temp = self.coordinator.data.get("ext_temp")
-        if ext_temp is not None:
-            return ext_temp
-        return None
+        return self.coordinator.data.get("ext_temp")
 
 
 class AbrpBattTempSensor(AbrpSensorBase):
@@ -341,10 +325,7 @@ class AbrpBattTempSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        batt_temp = self.coordinator.data.get("batt_temp")
-        if batt_temp is not None:
-            return batt_temp
-        return None
+        return self.coordinator.data.get("batt_temp")
 
 
 class AbrpTimestampSensor(AbrpSensorBase):
@@ -404,7 +385,7 @@ class AbrpOdometerSensor(AbrpSensorBase):
     _attr_native_unit_of_measurement = UnitOfLength.KILOMETERS
     _attr_device_class = SensorDeviceClass.DISTANCE
     _attr_state_class = SensorStateClass.TOTAL_INCREASING
-    _attr_icon = "mdi:measuring_tape"
+    _attr_icon = "mdi:tape-measure"
     _attr_translation_key = "odometer"
 
     def __init__(
@@ -419,9 +400,7 @@ class AbrpOdometerSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if odometer := self.coordinator.data.get("odometer"):
-            return odometer
-        return None
+        return self.coordinator.data.get("odometer")
 
 class AbrpEstBatteryRangeSensor(AbrpSensorBase):
     """Representation of Estimated Battery Range sensor."""
@@ -429,7 +408,7 @@ class AbrpEstBatteryRangeSensor(AbrpSensorBase):
     _attr_native_unit_of_measurement = UnitOfLength.KILOMETERS
     _attr_device_class = SensorDeviceClass.DISTANCE
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _attr_icon = "mdi:arrow_range"
+    _attr_icon = "mdi:arrow-expand-horizontal"
     _attr_translation_key = "est_battery_range"
 
     def __init__(
@@ -444,9 +423,7 @@ class AbrpEstBatteryRangeSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if est_battery_range := self.coordinator.data.get("est_battery_range"):
-            return est_battery_range
-        return None
+        return self.coordinator.data.get("est_battery_range")
 
 class AbrpSpeedSensor(AbrpSensorBase):
     """Representation of Speed sensor."""
@@ -454,7 +431,7 @@ class AbrpSpeedSensor(AbrpSensorBase):
     _attr_native_unit_of_measurement = UnitOfSpeed.KILOMETERS_PER_HOUR
     _attr_device_class = SensorDeviceClass.SPEED
     _attr_state_class = SensorStateClass.MEASUREMENT
-    _attr_icon = "mdi:speed"
+    _attr_icon = "mdi:speedometer"
     _attr_translation_key = "speed"
 
     def __init__(
@@ -469,9 +446,7 @@ class AbrpSpeedSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if speed := self.coordinator.data.get("speed"):
-            return speed
-        return None
+        return self.coordinator.data.get("speed")
 
 class AbrpElevationSensor(AbrpSensorBase):
     """Representation of Elevation sensor."""
@@ -494,9 +469,7 @@ class AbrpElevationSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if elevation := self.coordinator.data.get("elevation"):
-            return elevation
-        return None
+        return self.coordinator.data.get("elevation")
 
 class AbrpCalibratedReferenceConsumptionSensor(AbrpSensorBase):
     """Representation of Calibrated Reference Consumption sensor."""
@@ -519,6 +492,4 @@ class AbrpCalibratedReferenceConsumptionSensor(AbrpSensorBase):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if calib_ref_cons := self.coordinator.data.get("calib_ref_cons"):
-            return calib_ref_cons
-        return None
+        return self.coordinator.data.get("calib_ref_cons")
