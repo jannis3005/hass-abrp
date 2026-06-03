@@ -2,10 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
 import logging
-
-import aiohttp
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -15,22 +12,15 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import PERCENTAGE, UnitOfEnergy, UnitOfTemperature, UnitOfPower, UnitOfLength, UnitOfSpeed
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.update_coordinator import (
-    CoordinatorEntity,
-    DataUpdateCoordinator,
-    UpdateFailed,
-)
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.util import dt as dt_util
 
-from .const import API_TELEMETRY_URL, CONF_API_KEY, CONF_USER_TOKEN, DOMAIN
+from .const import DOMAIN
+from .coordinator import AbrpDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
-
-SCAN_INTERVAL = timedelta(minutes=5)
-SCAN_INTERVAL_FAST = timedelta(seconds=15)
 
 
 async def async_setup_entry(
@@ -39,12 +29,9 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up the sensor platform."""
-    api_key = entry.data[CONF_API_KEY]
-    user_token = entry.data[CONF_USER_TOKEN]
-    session = async_get_clientsession(hass)
-
-    coordinator = AbrpDataUpdateCoordinator(hass, session, api_key, user_token)
-    await coordinator.async_config_entry_first_refresh()
+    coordinator: AbrpDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id][
+        "coordinator"
+    ]
 
     async_add_entities(
         [
@@ -65,66 +52,6 @@ async def async_setup_entry(
             AbrpCalibratedReferenceConsumptionSensor(coordinator, entry)
         ]
     )
-
-
-class AbrpDataUpdateCoordinator(DataUpdateCoordinator):
-    """Class to manage fetching data from the API."""
-
-    def __init__(
-        self,
-        hass: HomeAssistant,
-        session: aiohttp.ClientSession,
-        api_key: str,
-        user_token: str,
-    ) -> None:
-        """Initialize."""
-        self.session = session
-        self.api_key = api_key
-        self.user_token = user_token
-
-        super().__init__(
-            hass,
-            _LOGGER,
-            name=DOMAIN,
-            update_interval=SCAN_INTERVAL,
-        )
-
-    async def _async_update_data(self):
-        """Update data via library."""
-        try:
-            headers = {"Authorization": f"APIKEY {self.api_key}"}
-            async with self.session.get(
-                f"{API_TELEMETRY_URL}?token={self.user_token}",
-                headers=headers,
-                timeout=aiohttp.ClientTimeout(total=10),
-            ) as response:
-                if response.status != 200:
-                    raise UpdateFailed(f"Error communicating with API: {response.status}")
-
-                data = await response.json()
-                result = data.get("result", {})
-                telemetry = result.get("telemetry", {})
-
-                if timestamp := result.get("timestamp"):
-                    telemetry["timestamp"] = timestamp
-                    try:
-                        ts = dt_util.parse_datetime(timestamp)
-                        if ts:
-                            if ts.tzinfo is None:
-                                ts = ts.replace(tzinfo=dt_util.UTC)
-
-                            if dt_util.utcnow() - ts < SCAN_INTERVAL:
-                                self.update_interval = SCAN_INTERVAL_FAST
-                            else:
-                                self.update_interval = SCAN_INTERVAL
-                    except (ValueError, TypeError):
-                        pass
-                if telemetry_type := result.get("telemetry_type"):
-                    telemetry["telemetry_type"] = telemetry_type
-
-                return telemetry
-        except aiohttp.ClientError as err:
-            raise UpdateFailed(f"Error communicating with API: {err}") from err
 
 
 class AbrpSensorBase(CoordinatorEntity, SensorEntity):

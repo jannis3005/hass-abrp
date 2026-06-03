@@ -15,8 +15,9 @@ from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import API_SEND_TELEMETRY_URL, CONF_USER_TOKEN, DOMAIN, CONF_API_KEY
+from .coordinator import AbrpDataUpdateCoordinator
 
-PLATFORMS: list[Platform] = [Platform.SENSOR]
+PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.DEVICE_TRACKER]
 
 SERVICE_SEND_TELEMETRY = "send_telemetry"
 
@@ -38,8 +39,15 @@ TELEMETRY_SCHEMA = vol.Schema(
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up A Better Route Planner from a config entry."""
+    api_key = entry.data[CONF_API_KEY]
+    user_token = entry.data[CONF_USER_TOKEN]
+    session = async_get_clientsession(hass)
+
+    coordinator = AbrpDataUpdateCoordinator(hass, session, api_key, user_token)
+    await coordinator.async_config_entry_first_refresh()
+
     hass.data.setdefault(DOMAIN, {})
-    hass.data[DOMAIN][entry.entry_id] = entry.data
+    hass.data[DOMAIN][entry.entry_id] = {"coordinator": coordinator}
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
