@@ -35,7 +35,7 @@ from the A Better Route Planner app.
 
 ### Step 2: Create a User Token
 
-1. Open the ABRP app or go to [https://abetterrouteplanner.com](https://abetterrouteplanner.com)
+1. Open the ABRP App on your phone (**!! This does not work on the Web**)
 2. Log in if you haven't already
 2. Navigate to your car settings
 3. Click **"Edit Car Connection Details"**
