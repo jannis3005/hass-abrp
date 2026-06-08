@@ -70,6 +70,11 @@
       "calib_ref_cons": {
         "name": "Calibrated Reference Consumption"
       }
+    },
+    "device_tracker": {
+      "location": {
+        "name": "Location"
+      }
     }
   }
 }
