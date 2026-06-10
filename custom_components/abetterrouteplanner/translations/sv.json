@@ -3,13 +3,13 @@
     "step": {
       "user": {
         "title": "A Better Route Planner",
-        "description": "Ange din API-nyckel och användartoken från ABRP. Hämta din API-nyckel från https://www.iternio.com/api och skapa en användartoken genom att redigera din bilanslutningsdetaljer i ABRP (Generic → In Development Live Datasource → Link).",
+        "description": "Ange din API-nyckel och användartoken från ABRP. Hämta din API-nyckel från {iternio_api_url} och skapa en användartoken genom att redigera din bilanslutningsdetaljer i ABRP (Generic → In Development Live Datasource → Link).",
         "data": {
           "api_key": "API-nyckel",
           "user_token": "Användartoken"
         },
         "data_description": {
-          "api_key": "Din Iternio API-nyckel från https://www.iternio.com/api",
+          "api_key": "Din Iternio API-nyckel från {iternio_api_url}",
           "user_token": "Din ABRP användartoken (skapad via bilanslutningsinställningar → Generic → In Development Live Datasource)"
         }
       }
