@@ -11,7 +11,13 @@ import voluptuous as vol
 from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import API_ME_URL, CONF_API_KEY, CONF_USER_TOKEN, DOMAIN
+from .const import (
+    API_ME_URL,
+    CONF_API_KEY,
+    CONF_USER_TOKEN,
+    DOMAIN,
+    ITERNIO_API_DOC_URL,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -65,6 +71,7 @@ class AbrpConfigFlow(ConfigFlow, domain=DOMAIN):
                 }
             ),
             errors=errors,
+            description_placeholders={"iternio_api_url": ITERNIO_API_DOC_URL},
         )
 
     async def _test_credentials(

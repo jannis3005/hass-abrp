@@ -8,6 +8,9 @@ API_ME_URL = f"{BASE_URL}/oauth/me"
 API_TELEMETRY_URL = f"{BASE_URL}/tlm/get_telemetry"
 API_SEND_TELEMETRY_URL = f"{BASE_URL}/tlm/send"
 
+# Documentation URLs (used as config flow description placeholders)
+ITERNIO_API_DOC_URL = "https://www.iternio.com/api"
+
 # Config keys
 CONF_API_KEY = "api_key"
 CONF_USER_TOKEN = "user_token"
