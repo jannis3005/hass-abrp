@@ -34,6 +34,30 @@ send_telemetry:
       selector:
         number:
           unit_of_measurement: "kW"
+    speed:
+      name: Speed
+      description: Vehicle speed in km/h
+      example: 100.0
+      selector:
+        number:
+          min: 0
+          unit_of_measurement: "km/h"
+    est_battery_range:
+      name: Estimated battery range
+      description: Vehicle's estimated remaining battery range in km
+      example: 250.0
+      selector:
+        number:
+          min: 0
+          unit_of_measurement: "km"
+    odometer:
+      name: Odometer
+      description: Vehicle total odometer reading in km
+      example: 30000.0
+      selector:
+        number:
+          min: 0
+          unit_of_measurement: "km"
     lat:
       name: Latitude
       description: GPS latitude coordinate
@@ -59,6 +83,13 @@ send_telemetry:
           min: 0
           max: 360
           unit_of_measurement: "°"
+    elevation:
+      name: Elevation
+      description: Vehicle elevation above sea level in meters
+      example: 100.0
+      selector:
+        number:
+          unit_of_measurement: "m"
     ext_temp:
       name: External temperature
       description: Outside temperature in Celsius
@@ -77,5 +108,17 @@ send_telemetry:
       name: Is charging
       description: Whether the vehicle is currently charging
       example: true
+      selector:
+        boolean:
+    is_draining:
+      name: Is draining
+      description: Whether the vehicle is currently driving/discharging
+      example: true
+      selector:
+        boolean:
+    is_parked:
+      name: Is parked
+      description: Whether the vehicle is currently parked
+      example: false
       selector:
         boolean:
