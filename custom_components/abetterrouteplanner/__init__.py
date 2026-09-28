@@ -27,12 +27,18 @@ TELEMETRY_SCHEMA = vol.Schema(
         vol.Optional("soc"): vol.All(vol.Coerce(float), vol.Range(min=0, max=100)),
         vol.Optional("soh"): vol.All(vol.Coerce(float), vol.Range(min=0, max=100)),
         vol.Optional("power"): vol.Coerce(float),
+        vol.Optional("speed"): vol.All(vol.Coerce(float), vol.Range(min=0)),
+        vol.Optional("est_battery_range"): vol.All(vol.Coerce(float), vol.Range(min=0)),
+        vol.Optional("odometer"): vol.All(vol.Coerce(float), vol.Range(min=0)),
         vol.Optional("lat"): vol.Coerce(float),
         vol.Optional("lon"): vol.Coerce(float),
         vol.Optional("heading"): vol.All(vol.Coerce(float), vol.Range(min=0, max=360)),
+        vol.Optional("elevation"): vol.Coerce(float),
         vol.Optional("ext_temp"): vol.Coerce(float),
         vol.Optional("batt_temp"): vol.Coerce(float),
         vol.Optional("is_charging"): cv.boolean,
+        vol.Optional("is_draining"): cv.boolean,
+        vol.Optional("is_parked"): cv.boolean,
     }
 )
 
